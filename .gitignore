@@ -1,5 +1,9 @@
 *.py[cod]
 
+apa-project.sublime-project
+apa-project.sublime-workspace
+__MACOSX/*
+
 # C extensions
 *.so
 
