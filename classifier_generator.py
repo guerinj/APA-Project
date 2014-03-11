@@ -1,11 +1,14 @@
 # Sujet TP1 : http://perso.limsi.fr/allauzen/APA_tp_perceptron.pdf
 # Sujet TP2 : http://perso.limsi.fr/allauzen/APA_tp_multiclasse.pdf
 
-import cPickle, gzip, numpy, random
+import cPickle
+import gzip
+import numpy
+import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-import words
+import data_reader
 
 
 # Load the dataset
@@ -47,7 +50,7 @@ print "2.6 Fonction pas d'apprentissage"
 def train_step(image, classifier, image_class):
     y = np.dot(image, classifier)
 
-    if y*image_class > 0:
+    if y * image_class > 0:
         return False, classifier
     else:
         return True, np.add(classifier, image * image_class)
@@ -65,7 +68,7 @@ def train_epoch(train_set, trained_target, order, classifier):
             train_set[0][index],
             train_classifier,
             1 if trained_target == train_set[1][index] else -1
-            )
+        )
 
         if changed:
             updates += 1
@@ -82,12 +85,12 @@ def test_classifier(test_set, classifier, target):
         result = np.dot(classifier, image)
         label = 1 if test_set[1][index] == target else -1
 
-        if result*label > 0:
+        if result * label > 0:
             success += 1
         else:
             error += 1
 
-    #print "Test effectues : %s/%s erreurs soit %s pourcent" % (error, success+error, error*100.0/(success+error) )
+    # print "Test effectues : %s/%s erreurs soit %s pourcent" % (error, success+error, error*100.0/(success+error) )
     return error, success
 
 print "Test des fonctions precedentes :"
@@ -95,12 +98,12 @@ print "Test des fonctions precedentes :"
 small_train_set = [
     train_set[0][:train_size],
     train_set[1][:train_size]
-    ]
+]
 
 small_test_set = [
     test_set[0][:train_size],
     test_set[1][:train_size]
-    ]
+]
 
 classifiers = []
 
@@ -166,13 +169,13 @@ for train_size, color in [(100, 'r'), (1000, 'b'), (5000, 'g'), (10000, 'c')]:
             plot_test_set,
             classifier,
             trained_target
-            )
+        )
         values_error.append(errors)
 
         plt.subplot(211)
-        plt.plot(values_x, values_y, color+'-')
+        plt.plot(values_x, values_y, color + '-')
         plt.subplot(212)
-        plt.plot(values_x, values_error, color+'--')
+        plt.plot(values_x, values_error, color + '--')
     print values_error
 
 
@@ -189,7 +192,7 @@ print "On obtient :"
 print results
 
 
-#Afficher une image
+# Afficher une image
 im = test_set[0][2].reshape(28, 28)
 plt.imshow(im.reshape(28, 28), plt.cm.gray)
 plt.show()
