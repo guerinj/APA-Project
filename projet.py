@@ -38,8 +38,6 @@ class APAProject(object):
         # We need to read data from datasmall and train the perceptron
         training_data_set = self.file_to_data_set('data/training_data/training.data')
 
-        # Now data set is filled with (vector, score)
-        # Shuffling training_data_set
         PERIODS = 3
 
         for i in range(PERIODS):
