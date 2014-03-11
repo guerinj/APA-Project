@@ -5,12 +5,11 @@ import numpy as np
 
 class DataReader(object):
 
-    datasource = 'data/datasmall'
     universe = list()
 
-    def __init__(self):
+    def __init__(self, datasource):
         words = set()
-        with open(self.datasource, 'r') as data:
+        with open(datasource, 'r') as data:
             for line in data:
                 _, _, sentence = line.split('|')
                 new_words = sentence.split(' ')
@@ -22,9 +21,15 @@ class DataReader(object):
     def get_sentence_coordinates(self, sentence):
         sentence_nparray = np.zeros((len(self.universe)))
         self.universe
-        for i, word in enumerate(self.universe):
-            if word in sentence.lower():
-                sentence_nparray[i] = 1
+        for word in sentence.split(' '):
+            word = word.strip().lower()
+            index = -1
+            try:
+                index = self.universe.index(word)
+            except:
+                pass
+            if index != -1:
+                sentence_nparray[index] = 1
         return sentence_nparray
 
 
