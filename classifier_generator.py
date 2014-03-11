@@ -1,6 +1,3 @@
-# Sujet TP1 : http://perso.limsi.fr/allauzen/APA_tp_perceptron.pdf
-# Sujet TP2 : http://perso.limsi.fr/allauzen/APA_tp_multiclasse.pdf
-
 import cPickle
 import gzip
 import numpy
@@ -10,13 +7,11 @@ import matplotlib.pyplot as plt
 
 import data_reader
 
-
 # Load the dataset
 f = gzip.open('mnist.pkl.gz', 'rb')
 train_set, valid_set, test_set = cPickle.load(f)
 f.close()
 
-datareader = DataReader()
 
 #
 #  1. Analyse du corpus
@@ -43,6 +38,7 @@ classifier = np.zeros((784))
 
 print "2.5 Ordre d'apprentissage : "
 print train_order[:10]
+
 
 print "2.6 Fonction pas d'apprentissage"
 
@@ -105,8 +101,6 @@ small_test_set = [
     test_set[1][:train_size]
 ]
 
-classifiers = []
-
 results = [[0] * 10, [0] * 10, [0] * 10]
 for target in range(10):
     result = []
@@ -126,12 +120,10 @@ for target in range(10):
     classifier, updates = train_epoch(small_train_set, target, train_order, classifier)
     e, s = test_classifier(small_train_set, classifier, target)
 
-    classifiers.append(classifier)
 
 #
 #  3. Courbe d'apprentissage
 #
-
 print "3.9 Courbe d'ordre d'apprentissage"
 
 for train_size, color in [(100, 'r'), (1000, 'b'), (5000, 'g'), (10000, 'c')]:
@@ -179,20 +171,4 @@ for train_size, color in [(100, 'r'), (1000, 'b'), (5000, 'g'), (10000, 'c')]:
     print values_error
 
 
-plt.show()
-
-#
-#   TP2 : un contre tous
-#
-
-results = []
-for i in range(10):
-    results.append(np.dot(classifiers[i], test_set[0][2]))
-print "On obtient :"
-print results
-
-
-# Afficher une image
-im = test_set[0][2].reshape(28, 28)
-plt.imshow(im.reshape(28, 28), plt.cm.gray)
 plt.show()
