@@ -16,8 +16,8 @@ class APAProject(object):
         self.softmax = Softmax()
         # Let's create 5 classifiers
         universe_size = len(self.data_reader.universe)
-        self.perceptron_classifiers = [np.zeros((universe_size)) for i in range(5)]
-        self.softmax_classifier = np.ones((5, universe_size))
+        self.perceptron_classifiers = [np.zeros((universe_size+1)) for i in range(5)]
+        self.softmax_classifier = np.ones((5, universe_size+1))
 
     def file_to_data_set(self, file):
         data_set = []
@@ -64,6 +64,8 @@ class APAProject(object):
             error_count, success_count = self.perceptron.test_classifier(test_data_set, classifier, classifier_index)
             print "Classifier %s just finished. %s%% results are good" % ((classifier_index + 1), success_count * 100 / (success_count + error_count))
 
+
+
     def train_softmax(self):
         start_time = time.time()
         print "Starting softmax training session..."
@@ -71,11 +73,13 @@ class APAProject(object):
         # We need to read data from datasmall and train the perceptron
         training_data_set = self.file_to_data_set('data/training_data/training.data')
 
+
         PERIODS = 10
 
         for i in range(PERIODS):
             random.shuffle(training_data_set)
-
+            # On apprend PERIODS fois et a chaque passage on test le classifier pour etudier l'evolution
+            # Rappel : self.softmax_classifier = np.ones((5, universe_size))
             self.softmax_classifier = self.softmax.train_epoch(self.softmax_classifier, training_data_set)
             self.test_softmax()
 
