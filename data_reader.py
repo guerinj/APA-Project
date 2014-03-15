@@ -19,7 +19,7 @@ class DataReader(object):
         self.universe = list(words)
 
     def get_sentence_coordinates(self, sentence):
-        sentence_nparray = np.zeros((len(self.universe)))
+        sentence_nparray = np.zeros((len(self.universe)+1))
         self.universe
         for word in sentence.split(' '):
             word = word.strip().lower()
@@ -30,6 +30,8 @@ class DataReader(object):
                 pass
             if index != -1:
                 sentence_nparray[index] = 1
+        # Ajoute une coordonnes supplementaire pour eviter le produit scalaire nul
+        sentence_nparray[index] = 1
         return sentence_nparray
 
 
