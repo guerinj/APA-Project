@@ -31,7 +31,7 @@ class DataReader(object):
             if index != -1:
                 sentence_nparray[index] = 1
         # Ajoute une coordonnes supplementaire pour eviter le produit scalaire nul
-        sentence_nparray[index] = 1
+        sentence_nparray[len(self.universe)] = 1
         return sentence_nparray
 
 
