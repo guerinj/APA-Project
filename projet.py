@@ -42,7 +42,7 @@ class APAProject(object):
         # We need to read data from datasmall and train the perceptron
         training_data_set = self.file_to_data_set('data/training_data/training.data')
 
-        PERIODS = 3
+        PERIODS = 5
 
         for i in range(PERIODS):
             # For each period, reshuffle
@@ -50,6 +50,7 @@ class APAProject(object):
             # We train every classfier
             for (classifier_index, classifier) in enumerate(self.perceptron_classifiers):
                 self.perceptron_classifiers[classifier_index], updates = self.perceptron.train_epoch(training_data_set, classifier_index, classifier)
+            self.test_perceptron_multiclass()
 
         training_end_time = time.time()
         training_duration = training_end_time - start_time
@@ -116,7 +117,6 @@ class APAProject(object):
 if __name__ == '__main__':
     apa_project = APAProject()
     apa_project.train_perceptron()
-    apa_project.test_perceptron()
     # apa_project.test_perceptron_multiclass()
 
     # apa_project.train_softmax() # apa_project.test_softmax() est appele apres chaque training pour evaluer les ameliorations
