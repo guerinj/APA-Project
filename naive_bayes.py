@@ -55,7 +55,7 @@ class BinaryNaiveBayesian(object):
         comes from a given class, using naive bayesian method
         i.e. number of sentences of this classe that have the word on number of sentences of this class
         """
-        small_alpha = 0.000000001
+        small_alpha = 0.00001
         if word in self.universe:
             if class_number in self.universe[word]:
                 documents_with_word_in_class = float(self.universe[word][class_number])
