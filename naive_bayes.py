@@ -11,8 +11,13 @@ class BinaryNaiveBayesian(object):
     universe = dict()
     classes_document_count = dict()
 
-    def __init__(self, datasource):
+    def __init__(self, datasource, stopwords_source=None):
         words = set()
+        stopwords = set()
+        if stopwords_source:
+            with open(stopwords_source, 'r') as data:
+                for line in data:
+                    stopwords = stopwords.union(set([line.strip().lower()]))
         with open(datasource, 'r') as data:
             for line in data:
                 _, score, sentence = line.split('|')
@@ -20,20 +25,21 @@ class BinaryNaiveBayesian(object):
                 new_words = sentence.split(' ')
                 new_words = set(new_words)  # remove duplicate words
                 for word in new_words:
-                    if word.strip() not in string.punctuation:
-                        word = word.strip().lower()
-                        # We keep a count of total number of document of a given class
-                        self.classes_document_count[class_number] = self.classes_document_count.get(class_number, 0) + 1
-                        # We keep a total count of documents of this class that have this word
-                        if word in self.universe:
-                            if class_number in self.universe[word]:
-                                self.universe[word][class_number] = self.universe[word][class_number] + 1
+                    if not word in stopwords:
+                        if word.strip() not in string.punctuation:
+                            word = word.strip().lower()
+                            # We keep a count of total number of document of a given class
+                            self.classes_document_count[class_number] = self.classes_document_count.get(class_number, 0) + 1
+                            # We keep a total count of documents of this class that have this word
+                            if word in self.universe:
+                                if class_number in self.universe[word]:
+                                    self.universe[word][class_number] = self.universe[word][class_number] + 1
+                                else:
+                                    self.universe[word][class_number] = 1
                             else:
-                                self.universe[word][class_number] = 1
-                        else:
-                            self.universe[word] = {
-                                class_number: 1
-                            }
+                                self.universe[word] = {
+                                    class_number: 1
+                                }
 
     def get_document_words(self, document):
         word_set = set()

@@ -25,7 +25,7 @@ class DataReader(object):
         self.universe = list(words)
 
     def get_sentence_coordinates(self, sentence):
-        sentence_nparray = np.zeros((len(self.universe)+1))
+        sentence_nparray = np.zeros((len(self.universe) + 1))
         self.universe
         for word in sentence.split(' '):
             word = word.strip().lower()
