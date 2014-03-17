@@ -64,6 +64,26 @@ class APAProject(object):
             error_count, success_count = self.perceptron.test_classifier(test_data_set, classifier, classifier_index)
             print "Classifier %s just finished. %s%% results are good" % ((classifier_index + 1), success_count * 100 / (success_count + error_count))
 
+    def test_perceptron_multiclass(self):
+        print "Starting testing session..."
+
+        test_data_set = self.file_to_data_set('data/test_data/test.data')
+
+        success_count = 0
+        error_count = 0
+
+        for (sentence_vector, class_number) in test_data_set:
+            results_classifiers = []
+            test_class = -1
+            for (classifier_index, classifier) in enumerate(self.perceptron_classifiers):
+                results_classifiers.append(np.dot(classifier, sentence_vector))
+            if results_classifiers.index(max(results_classifiers)) == class_number:
+                success_count += 1
+            else:
+                error_count += 1
+
+        print "Classifier just finished. %s/%s ~= %s%% results are good" % (success_count, (error_count + success_count), success_count * 100 / (success_count + error_count))
+
 
 
     def train_softmax(self):
@@ -99,8 +119,9 @@ class APAProject(object):
 
 if __name__ == '__main__':
     apa_project = APAProject()
-    #apa_project.train_perceptron()
+    apa_project.train_perceptron()
     #apa_project.test_perceptron()
+    apa_project.test_perceptron_multiclass()
 
-    apa_project.train_softmax() # apa_project.test_softmax() est appele apres chaque training pour evaluer les ameliorations
+    #apa_project.train_softmax() # apa_project.test_softmax() est appele apres chaque training pour evaluer les ameliorations
     #apa_project.test_softmax()
