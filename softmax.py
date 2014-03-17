@@ -9,7 +9,7 @@ import math
 #
 class Softmax(object):
     nombre_class=5
-    l=0.001 # LAMBDA parameter
+    l=0.01 # LAMBDA parameter
 
 
     def infer_class(self, W, x):
@@ -26,8 +26,6 @@ class Softmax(object):
         for v in vector:
             exp_sum += math.exp(v - v_max)
         
-
-
         return [math.exp(vector[i] - v_max)/exp_sum for i in range(self.nombre_class)]
 
 
@@ -61,17 +59,21 @@ class Softmax(object):
     # Realise une etape d'apprentissage
     #
     def train_epoch(self, W, shuffled_set):
-        
+        T=2
         for t, (observation_vector, observation_class) in enumerate(shuffled_set):
-            T = (t+1.0)/10 # on utilise T= t+1 pour eviter la division par 0
+            T = t+1
+            #if t % 100 == 0:
+            #    T += 1
 
             W = self.train_step(
                 W,
                 observation_vector,
                 observation_class,
-                1.0 - (1.0/T),  # tend vers 1 pour stabiliser le classifier
-                1.0/(self.l*(T + 1.0)) # tend vers 0
+                1,#1.0 - 1.0/T,  # tend vers 1 pour stabiliser le classifier
+                0.3 #1.0/(self.l*(T+1.0)) # tend vers 0
             )
+
+            # 1 / 0.1 pour alpha et beta donne environ 37% de reussite (tres bien)
 
         return W
 

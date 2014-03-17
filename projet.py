@@ -107,7 +107,7 @@ class APAProject(object):
 
     def test_softmax(self):
         print "Starting softmax testing session..."
-
+        
         test_data_set = self.file_to_data_set('data/test_data/test.data')
 
         error_count, success_count = self.softmax.test_classifier(self.softmax_classifier, test_data_set)
