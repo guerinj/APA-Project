@@ -100,17 +100,20 @@ class BinaryNaiveBayesian(object):
                 class_result = class_number
         return class_result
 
+    def get_bayes_results(self, test_source):
+        success = 0
+        count = 0
+        with open(test_source) as test_data:
+            for line in test_data:
+                count += 1
+                _, score, sentence = line.split('|')
+                real_class = int(math.floor(float(score) * 5))
+                bayesian_class = naive_bayes.get_document_class(sentence)
+                if real_class == bayesian_class:
+                    success += 1
+        return float(success) / float(count)
+
 
 if __name__ == '__main__':
     naive_bayes = BinaryNaiveBayesian('data/training_data/training.data')
-    success = 0
-    count = 0
-    with open('data/test_data/test.data') as test_data:
-        for line in test_data:
-            count += 1
-            _, score, sentence = line.split('|')
-            real_class = int(math.floor(float(score) * 5))
-            bayesian_class = naive_bayes.get_document_class(sentence)
-            if real_class == bayesian_class:
-                success += 1
-    print "Total success of %s%%" % (100 * success / count)
+    print naive_bayes.get_bayes_results('data/test_data/test.data')

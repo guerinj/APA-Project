@@ -11,7 +11,7 @@ from data_reader import DataReader
 class APAProject(object):
 
     def __init__(self):
-        self.data_reader = DataReader('data/training_data/training.data')
+        self.data_reader = DataReader('data/training_data/training.data', 'data/stopwords/stopwords.txt')
         self.perceptron = Perceptron()
         self.softmax = Softmax()
         # Let's create 5 classifiers
@@ -116,8 +116,8 @@ class APAProject(object):
 if __name__ == '__main__':
     apa_project = APAProject()
     apa_project.train_perceptron()
-    # apa_project.test_perceptron()
-    apa_project.test_perceptron_multiclass()
+    apa_project.test_perceptron()
+    # apa_project.test_perceptron_multiclass()
 
     # apa_project.train_softmax() # apa_project.test_softmax() est appele apres chaque training pour evaluer les ameliorations
     # apa_project.test_softmax()

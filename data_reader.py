@@ -43,5 +43,8 @@ class DataReader(object):
 
 if __name__ == '__main__':
     datareader = DataReader('data/test_data/test.data', 'data/stopwords/stopwords.txt')
+    datareader_nostopwords = DataReader('data/test_data/test.data')
+    print len(datareader.universe)
+    print len(datareader_nostopwords.universe)
     sentence = "7549 | 0.84722 | insightfully written , delicately performed"
     print datareader.get_sentence_coordinates(sentence)
