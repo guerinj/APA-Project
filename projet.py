@@ -6,12 +6,12 @@ import time
 from perceptron import Perceptron
 from softmax import Softmax
 from data_reader import DataReader
-
+from im import *
 
 class APAProject(object):
 
     def __init__(self):
-        self.data_reader = DataReader('data/training_data/training.data', 'data/stopwords/stopwords.txt')
+        self.data_reader = DataReader('data/training_data/training.data', 'data/stopwords/stopwords.txt', True, 1000)
         self.perceptron = Perceptron()
         self.softmax = Softmax()
         # Let's create 5 classifiers
@@ -107,8 +107,9 @@ class APAProject(object):
 
     def test_softmax(self):
         print "Starting softmax testing session..."
-        
+
         test_data_set = self.file_to_data_set('data/test_data/test.data')
+        #test_data_set = self.file_to_data_set('data/training_data/training.data')
 
         error_count, success_count = self.softmax.test_classifier(self.softmax_classifier, test_data_set)
         print "Classifier just finished. %s/%s ~= %s%% results are good" % (success_count, (error_count + success_count), success_count * 100 / (success_count + error_count))
@@ -116,8 +117,10 @@ class APAProject(object):
 
 if __name__ == '__main__':
     apa_project = APAProject()
-    apa_project.train_perceptron()
-    # apa_project.test_perceptron_multiclass()
+    
+    #apa_project.train_perceptron()
+    #apa_project.train_perceptron()
+    #apa_project.test_perceptron_multiclass()
 
-    # apa_project.train_softmax() # apa_project.test_softmax() est appele apres chaque training pour evaluer les ameliorations
-    # apa_project.test_softmax()
+    apa_project.train_softmax() # apa_project.test_softmax() est appele apres chaque training pour evaluer les ameliorations
+    apa_project.test_softmax()

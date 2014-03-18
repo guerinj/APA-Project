@@ -1,13 +1,13 @@
 import random
 import string
 import numpy as np
-
+from im import *
 
 class DataReader(object):
 
     universe = list()
 
-    def __init__(self, datasource, stopwords_source=None):
+    def __init__(self, datasource, stopwords_source=None, im=False, im_limit=100):
         words = set()
         with open(datasource, 'r') as data:
             for line in data:
@@ -22,7 +22,17 @@ class DataReader(object):
                 for line in data:
                     stopwords = stopwords.union(set([line.strip().lower()]))
             words = words.difference(stopwords)
+
         self.universe = list(words)
+
+        if im:
+
+            information_mutuelle = InformationMutuelle(self)
+
+            words = set(information_mutuelle.get_filtered_universe(10, im_limit+10))
+
+        self.universe = list(words)
+        print "Universe size : %s" % len(self.universe) 
 
     def get_sentence_coordinates(self, sentence):
         sentence_nparray = np.zeros((len(self.universe) + 1))
@@ -42,7 +52,7 @@ class DataReader(object):
 
 
 if __name__ == '__main__':
-    datareader = DataReader('data/test_data/test.data', 'data/stopwords/stopwords.txt')
+    datareader = DataReader('data/test_data/test.data', 'data/stopwords/stopwords.txt', True, 100)
     datareader_nostopwords = DataReader('data/test_data/test.data')
     print len(datareader.universe)
     print len(datareader_nostopwords.universe)
