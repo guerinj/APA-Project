@@ -11,6 +11,7 @@ from im import *
 class APAProject(object):
 
     def __init__(self):
+
         self.data_reader = DataReader('data/training_data/training.data', 'data/stopwords/stopwords.txt', True, 1000)
         self.perceptron = Perceptron()
         self.softmax = Softmax()
